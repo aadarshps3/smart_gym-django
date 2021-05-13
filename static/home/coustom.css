@@ -1,0 +1,10 @@
+.banner-bg .banner-text h2 {
+    color: black !important;
+}
+.banner-bg .banner-text h1 {
+    color: black !important;
+    float: left !important;
+}
+.banner-bg .template-btn:hover {
+    color: #1a1919 !important;
+}

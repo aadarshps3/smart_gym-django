@@ -1,0 +1,59 @@
+{% extends 'instructor/base.html' %}
+{% load crispy_forms_filters %}
+{% block content %}
+
+<div class="col-lg-8 col-ml-8">
+    <div class="row">
+        <!-- basic form start -->
+        <div class="col-12 mt-5">
+            <div class="card">
+                {% for message in messages %}
+                    <div class="alert alert-info" role="alert">
+                        <strong>{{message}}</strong>
+                    </div>
+                    {% endfor %}
+                <div class="card-body">
+                    <h4 class="header-title">Add User Health Detail</h4>
+                    <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                        <div class="form-group">
+                            <label class="col-form-label">User</label>
+                            <select class="form-control" name="cname" required>
+                                <option>Select</option>
+
+                                {% for name in names %}
+                                <option value="{{ name.user_id }}">{{ name.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Height</label>
+                            <input type="text" class="form-control" name="height" required>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-form-label">Weight</label>
+                            <input type="text" class="form-control" name="weight" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Health Issues if any</label>
+                            <input type="text" class="form-control" name="issue" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Medicine Consumed</label>
+
+                            <input type="text" class="form-control" name="medicine" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+        <!-- basic form end -->
+
+    </div>
+</div>
+{% endblock %}

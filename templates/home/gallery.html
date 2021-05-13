@@ -1,0 +1,123 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Page Title -->
+    <title>Contact Us</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'home/images/logo/favicon.png' %}" type="image/x-icon">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="{% static 'home/css/animate-3.7.0.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/font-awesome-4.7.0.min.css' %}">
+    <link rel="stylesheet" href="{% static 'home/fonts/flat-icon/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/bootstrap-4.1.3.min.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/owl-carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/nice-select.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/style.css' %}">
+</head>
+<body>
+    <!-- Preloader Starts -->
+    <div class="preloader">
+        <div class="spinner"></div>
+    </div>
+    <!-- Preloader End -->
+
+    <!-- Header Area Starts -->
+  {%  include "home/header.html" %}
+
+    <!-- Header Area End -->
+
+
+
+
+
+<section class="gallery-area section-padding">
+
+ <div class="row glry">
+<div class="gallery col-md-4">
+  <a target="_blank" href="img_5terre.jpg">
+    <img src="{% static 'home/images/one.jpg' %}" alt="Cinque Terre" width="600" height="400">
+  </a>
+</div>
+
+<div class="gallery col-md-4">
+  <a target="_blank" href="img_forest.jpg">
+    <img src="{% static 'home/images/two.jpg' %}" alt="Forest" width="600" height="400">
+  </a>
+</div>
+
+<div class="gallery col-md-4">
+  <a target="_blank" href="img_lights.jpg">
+    <img src="{% static 'home/images/three.jpg' %}" alt="Northern Lights" width="600" height="400">
+  </a>
+</div>
+</div>
+<div class="row glry">
+<div class="gallery col-md-4">
+  <a target="_blank" href="img_5terre.jpg">
+    <img src="{% static 'home/images/four.jpg' %}" alt="Cinque Terre" width="600" height="400">
+  </a>
+</div>
+
+<div class="gallery col-md-4">
+  <a target="_blank" href="img_forest.jpg">
+    <img src="{% static 'home/images/five.jpg' %}" alt="Forest" width="600" height="400">
+  </a>
+</div>
+
+<div class="gallery col-md-4">
+  <a target="_blank" href="img_lights.jpg">
+    <img src="{% static 'home/images/six.jpg' %}" alt="Northern Lights" width="600" height="400">
+  </a>
+</div>
+</div>
+
+
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+       {%  include "home/footer.html" %}
+
+
+    <!-- Javascript -->
+    <script src="{% static 'home/js/vendor/jquery-2.2.4.min.js' %}"></script>
+    <script src="{% static 'home/js/vendor/bootstrap-4.1.3.min.js' %}"></script>
+    <script src="{% static 'home/js/vendor/wow.min.js' %}"></script>
+    <script src="{% static 'home/js/vendor/owl-carousel.min.js' %}"></script>
+    <script src="{% static 'home/js/vendor/jquery.nice-select.min.js' %}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpfS1oRGreGSBU5HHjMmQ3o5NLw7VdJ6I"></script>
+    <script src="{% static 'home/js/vendor/gmaps.min.js' %}"></script>
+    <script src="{% static 'home/js/main.js' %}"></script>
+
+</body>
+</html>

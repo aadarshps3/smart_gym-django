@@ -1,0 +1,35 @@
+{% extends 'usertemplates/base.html' %}
+{% block content %}
+
+
+<div class="col-lg-12 mt-5">
+
+    {% for message in messages %}
+    <div class="alert alert-danger" role="alert">
+        <strong>{{message}}</strong>
+    </div>
+    {% endfor %}
+    <div class="card">
+
+        <div class="card-body">
+            <h4 class="header-title">Your BMI</h4>
+
+            <div class="alert alert-info" role="alert" style="height:200px">
+                <h3>
+                    <strong>Your BMI is {{user_bmi}}</strong><br><br>
+                    {% if user_bmi < 18.5 %}
+                    You are Underweight
+                    {% elif user_bmi >= 18.5 and user_bmi <= 24.9 %}
+                    Congrats!!! You have normal weight.
+                    {% elif user_bmi > 24.9 and user_bmi <= 29.9 %}
+                    You are overweight.
+                    {% else %}
+                    Be careful!!! You are obese.
+                    {% endif %}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'usertemplates/base.html' %}
+{% load crispy_forms_filters %}
+{% block content %}
+
+<div class="col-lg-8 col-ml-8">
+    <div class="row">
+        <!-- basic form start -->
+        <div class="col-12 mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title">Ask Medical Doubts</h4>
+                    <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                        {{form|crispy}}
+
+                        <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>
+                    </form>
+
+                    {% for message in messages %}
+                    <div class="alert alert-info" role="alert">
+                        <strong>{{message}}</strong>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <!-- basic form end -->
+
+    </div>
+</div>
+{% endblock %}

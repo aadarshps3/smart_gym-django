@@ -1,0 +1,31 @@
+{% extends 'admintemp/base.html' %}
+{% load crispy_forms_filters %}
+{% block content %}
+
+<div class="col-lg-8 col-ml-8">
+    <div class="row">
+        {% for message in messages %}
+        <div class="alert alert-info" role="alert">
+            <strong>{{message}}</strong>
+        </div>
+        {% endfor %}
+        <!-- basic form start -->
+        <div class="col-12 mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title">Register Customer</h4>
+                    <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                        {{customer_form|crispy}}
+                        {{login_form|crispy}}
+                        <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+        <!-- basic form end -->
+
+    </div>
+</div>
+{% endblock %}

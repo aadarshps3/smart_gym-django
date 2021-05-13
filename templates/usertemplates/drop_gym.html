@@ -1,0 +1,43 @@
+{% extends 'usertemplates/base.html' %}
+{% block content %}
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="card card-primary">
+                    <div class="card-header" style="background-color:#007bff;">
+                        <h3 class="card-title">Drop Gym</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+
+                    <form method="post">{% csrf_token %}
+                        <div class="card-body">
+
+                            <h1> Are You Sure Want to Drop?</h1>
+                            <br>
+                            <br>
+                            <br>
+
+
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">YES</button>
+                                <a href="{% url 'drop_gym' %}" type="submit" class="btn btn-primary ">CANCEL</a>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+        </div>
+    </div>
+
+</section>
+<!-- /.content -->
+{% endblock %}
+

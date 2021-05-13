@@ -1,0 +1,159 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Page Title -->
+    <title>Instructors</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'home/images/logo/favicon.png' %}" type="image/x-icon">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="{% static 'home/css/animate-3.7.0.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/font-awesome-4.7.0.min.css' %}">
+    <link rel="stylesheet" href="{% static 'home/fonts/flat-icon/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/bootstrap-4.1.3.min.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/owl-carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/nice-select.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/style.css' %}">
+</head>
+<body>
+    <!-- Preloader Starts -->
+    <div class="preloader">
+        <div class="spinner"></div>
+    </div>
+    <!-- Preloader End -->
+
+    <!-- Header Area Starts -->
+    {%  include "home/header.html" %}
+
+    <!-- Header Area End -->
+
+    <!-- Banner Area Starts -->
+    <section class="banner-area banner-bg about-page text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="banner-text">
+                        <h3>Instructors</h3>
+                        <a href="index.php">home</a>
+                        <span class="mx-2">/</span>
+                        <a href="instructor.php">instructors</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Banner Area End -->
+
+
+        <!-- Coaches Area Starts -->
+        <section class="coaches-area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-top text-center">
+                        <h3>Our Instructors</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-sm-6">
+                    <div class="single-coaches mb-5 mb-lg-0">
+                        <div class="coaches-img">
+                            <img src="assets/images/coach1.jfif" alt="">
+                            <div class="hover-state">
+                                <ul>
+                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="coaches-footer text-center">
+                            <h5>Arun</h5>
+                            <h6>Fitness Trainer</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="single-coaches mb-5 mb-lg-0">
+                        <div class="coaches-img">
+                            <img src="assets/images/coach2.jfif" alt="">
+                            <div class="hover-state">
+                                <ul>
+                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="coaches-footer text-center">
+                            <h5>Akhil</h5>
+                            <h6>Weight Loss</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 mb-5 mb-sm-0">
+                    <div class="single-coaches">
+                        <div class="coaches-img">
+                            <img src="assets/images/coach3.jpg" alt="">
+                            <div class="hover-state">
+                                <ul>
+                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="coaches-footer text-center">
+                            <h5>Varun</h5>
+                            <h6>Gym Fitness</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="single-coaches">
+                        <div class="coaches-img">
+                            <img src="assets/images/coach4.jpg" alt="">
+                            <div class="hover-state">
+                                <ul>
+                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="coaches-footer text-center">
+                            <h5>Manu</h5>
+                            <h6>Yoga Trainer</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Coaches Area End -->
+
+
+ {% include "home/footer.html" %}
+    <!-- Footer Area End -->
+
+
+    <!-- Javascript -->
+    <script src="{% static 'home/js/vendor/jquery-2.2.4.min.js' %}"></script>
+	<script src="{% static 'home/js/vendor/bootstrap-4.1.3.min.js' %}"></script>
+    <script src="{% static 'home/js/vendor/wow.min.js' %}"></script>
+    <script src="{% static 'home/js/vendor/owl-carousel.min.js' %}"></script>
+    <script src="{% static 'home/js/vendor/jquery.nice-select.min.js' %}"></script>
+    <script src="{% static 'home/js/main.js' %}"></script>
+
+
+</body>
+</html>

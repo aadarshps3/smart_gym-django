@@ -1,0 +1,60 @@
+{% extends 'usertemplates/base.html' %}
+{% block content %}
+
+
+<div class="col-lg-10 mt-5">
+    {% for message in messages %}
+    <div class="alert alert-danger" role="alert">
+        <strong>{{message}}</strong>
+    </div>
+    {% endfor %}
+    <div class="card">
+
+        <div class="card-body">
+            <h4 class="header-title">Batch</h4>
+
+            {% for user in users %}
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label>Batch Name</label>
+                    </div>
+                    <div class="col-lg-8">
+                        <label>{{user.required_batch_name}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label>Batch Time</label>
+                    </div>
+                    <div class="col-lg-8">
+                        <label>{{user.required_batch_time}}</label>
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+</div>
+
+<script type="text/javascript">
+window.mytest = function()
+{ var isValid = confirm('Are you sure Want to Delete ?');if (!isValid) { event.preventDefault();
+  }}
+
+
+
+
+
+
+
+
+
+</script>
+{% endblock %}
