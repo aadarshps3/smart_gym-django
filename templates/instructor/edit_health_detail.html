@@ -11,31 +11,8 @@
                     <h4 class="header-title">Edit User Health Detail</h4>
                     <form method="post" enctype="multipart/form-data">{% csrf_token %}
                         <div class="form-group">
-                            <label class="col-form-label">User</label>
-                            <input type="text" class="form-control" name="name"
-                                   value="{{ details.name }}" readonly>
+                           {{form|crispy}}
                         </div>
-                        <div class="form-group">
-                            <label class="col-form-label">Height</label>
-                            <input type="text" class="form-control" placeholder="Height" name="height"
-                                   value="{{ details.height }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label">Weight</label>
-                            <input type="text" class="form-control" placeholder="Weight" name="weight"
-                                   value="{{ details.weight }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label">Health Issues if any</label>
-                            <input type="text" class="form-control" placeholder="Health Issue" name="issue"
-                                   value="{{ details.health_issue }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label">Medicine Consumed</label>
-                            <input type="text" class="form-control" placeholder="Medicine Consumed" name="medicine"
-                                   value="{{ details.medicine_consumption }}" required>
-                        </div>
-
 
                         <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>
                     </form>

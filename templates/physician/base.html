@@ -54,6 +54,14 @@
                                 <li class="active"><a href="{% url 'physician_page' %}">Home</a></li>
                             </ul>
                         </li>
+                         <li>
+                            <a href="javascript:void(0)" aria-expanded="true"><i
+                                    class="ti-slice"></i><span>CONSULTATION TIME</span></a>
+                            <ul class="collapse">
+                                <li><a href="{% url 'consultation_time' %}">View</a></li>
+
+                            </ul>
+                        </li>
                         <li>
                             <a href="javascript:void(0)" aria-expanded="true"><i
                                     class="ti-slice"></i><span> USER DETAILS</span></a>
@@ -127,7 +135,7 @@
                 </div>
                 <div class="col-sm-6 clearfix">
                     <div class="user-profile pull-right">
-
+  <img class="avatar user-thumb" src="{{request.user.register.photo.url}}" alt="profile">
                         <h4 class="user-name dropdown-toggle" data-toggle="dropdown">{{request.user}} <i
                                 class="fa fa-angle-down"></i></h4>
                         <div class="dropdown-menu">

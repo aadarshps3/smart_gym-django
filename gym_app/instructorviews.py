@@ -3,31 +3,28 @@ from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect
 from gym_app import models
-from gym_app.forms import AddDietPlan
-from gym_app.models import UserHealth, DietPlan, Attendance, Register, FirstAid
+from gym_app.forms import AddDietPlan, UserHealthForm
+from gym_app.models import UserHealth, DietPlan, Attendance, Register, FirstAid, Batch, Instructor
 
 
 def add_health(request):
     name = Register.objects.filter(role='Customer')
+    form = UserHealthForm()
     if request.method == 'POST':
-        nam = request.POST.get('cname')
-        height = request.POST.get('height')
-        weight = request.POST.get('weight')
-        issue = request.POST.get('issue')
-        medicine = request.POST.get('medicine')
+        form = UserHealthForm(request.POST)
+        if form.is_valid():
+            health = form.save(commit=False)
+            qs = UserHealth.objects.filter(name=health.name)
+            if qs.exists():
+                messages.info(request, 'Health Detail Already Added for this user')
+            else:
 
-        health = models.UserHealth()
-        health.name = Register.objects.filter(role='Customer').get(user_id=nam)
-        health.height = height
-        health.weight = weight
-        health.health_issue = issue
-        health.medicine_consumption = medicine
-        health.instructor = Register.objects.filter(role='Instructor').get(user=request.user)
-        health.save()
-        messages.info(request,'User health Detail Added')
-        return redirect('add_health')
+                health.instructor=Register.objects.filter(role='Instructor').get(user=request.user)
+                health.save()
+                messages.info(request,'User health Detail Added')
+                return redirect('add_health')
 
-    return render(request, 'instructor/add_health_detail.html', {'names': name})
+    return render(request, 'instructor/add_health_detail.html', {'form': form})
 
 
 def view_health_issue(request):
@@ -38,20 +35,18 @@ def view_health_issue(request):
 
 def edit_health_issue(request, id):
     detail = UserHealth.objects.get(id=id)
+    form = UserHealthForm(instance=detail)
     if request.method == 'POST':
-        height = request.POST.get('height')
-        weight = request.POST.get('weight')
-        issue = request.POST.get('issue')
-        medicine = request.POST.get('medicine')
+        form = UserHealthForm(request.POST or None,instance=detail or None)
+        if form.is_valid():
+            form.save()
 
-        detail.height = height
-        detail.weight = weight
-        detail.health_issue = issue
-        detail.medicine_consumption = medicine
-        detail.save()
-        return redirect('view_health')
 
-    return render(request, 'instructor/edit_health_detail.html', {'details': detail})
+            messages.info(request,'User health Detail Updated')
+
+            return redirect('view_health')
+
+    return render(request, 'instructor/edit_health_detail.html', {'form': form})
 
 
 def add_diet(request):
@@ -96,8 +91,17 @@ def view_firstaid_instructor(request):
 
 
 def add_attendance(request):
-    name = models.Register.objects.filter(role='Customer')
-    return render(request, 'instructor/add_attendance.html', {'names': name})
+    u = Register.objects.get(user=request.user)
+    try:
+
+        in_batch = Instructor.objects.filter(instructor=u)[0]
+        # print(in_batch,'lllll')
+        # print(u.instructor__batch)
+        name = Register.objects.filter(role='Customer',required_batch_name=in_batch.batch)
+        return render(request, 'instructor/add_attendance.html', {'names': name})
+    except:
+
+        return render(request, 'instructor/add_attendance.html', {'names': 'no batch'})
 
 
 def mark(request, id):
@@ -127,7 +131,9 @@ def view_attendance(request):
 
 
 def day_attendance(request, date):
-    attendance = Attendance.objects.filter(date=date)
+    u = Register.objects.get(user=request.user)
+    in_batch = Instructor.objects.filter(instructor=u)[0]
+    attendance = Attendance.objects.filter(date=date,name__required_batch_name=in_batch.batch)
     context = {
         'attendances': attendance,
         'date': date

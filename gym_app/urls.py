@@ -40,8 +40,9 @@ urlpatterns = [
     path('edit_equipment/<int:id>/', adminviews.edit_equipment, name='edit_equipment'),
     path('delete_equipment/<int:id>/', adminviews.delete_equipment, name='delete_equipment'),
     path('day_attendance_admin/<date>/', adminviews.day_attendance_admin, name='day_attendance_admin'),
-
-
+    path('ajax/load-batch/', views.load_batch, name='ajax_load_batch'),  # AJAX
+    path('ajax/load-bill/', adminviews.load_bill, name='ajax_load_bill'),  # AJAX
+    path('view_batches/', adminviews.view_batches, name='view_batches'),  # AJAX
 
     path('instructor_page/', views.instructor_page, name='instructor_page'),
     path('add_health/', instructorviews.add_health, name='add_health'),
@@ -59,6 +60,7 @@ urlpatterns = [
 
 
 
+
     path('physician_page/', views.physician_page, name='physician_page'),
     path('view_user_health/', physicianviews.view_user_health, name='view_user_health'),
     path('edit_user_health/<int:id>/', physicianviews.edit_user_health, name='edit_user_health'),
@@ -71,6 +73,7 @@ urlpatterns = [
     path('delete_first_aid/<int:id>/', physicianviews.delete_first_aid, name='delete_first_aid'),
     path('view_medicaldoubts_physician/', physicianviews.view_medicaldoubts_physician, name='view_medicaldoubts_physician'),
     path('reply_doubt/<int:id>/', physicianviews.reply_doubts, name='reply_doubts'),
+    path('consultation_time/', physicianviews.consultation_time, name='consultation_time'),
 
 
     path('user_page/', views.user_page, name='user_page'),
@@ -86,6 +89,8 @@ urlpatterns = [
     path('add_complaint/', userviews.add_complaint, name='add_complaint'),
     path('view_complaint_user/', userviews.view_complaint_user, name='view_complaint_user'),
     path('view_attendance_user/', userviews.view_attendance_user, name='view_attendance_user'),
+    path('get_invoice/<int:id>/', userviews.get_invoice, name='get_invoice'),
+    path('view_invoice/<int:id>/', userviews.view_invoice, name='view_invoice'),
 
     path('view_bill_user/', userviews.view_bill_user, name='view_bill_user'),
     path('pay_bill/<int:id>/', userviews.pay_bill, name='pay_bill'),
@@ -94,5 +99,6 @@ urlpatterns = [
     path('bmi/', userviews.bmi, name='bmi'),
     path('view_bmi/<bmi>/', userviews.view_bmi, name='view_bmi'),
     path('drop_gym/', userviews.drop_gym, name='drop_gym'),
+    path('pay_in_direct/<int:id>/', userviews.pay_in_direct, name='pay_in_direct'),
 
 ]

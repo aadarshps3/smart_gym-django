@@ -15,34 +15,8 @@
                 <div class="card-body">
                     <h4 class="header-title">Add User Health Detail</h4>
                     <form method="post" enctype="multipart/form-data">{% csrf_token %}
-                        <div class="form-group">
-                            <label class="col-form-label">User</label>
-                            <select class="form-control" name="cname" required>
-                                <option>Select</option>
-
-                                {% for name in names %}
-                                <option value="{{ name.user_id }}">{{ name.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label">Height</label>
-                            <input type="text" class="form-control" name="height" required>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label class="col-form-label">Weight</label>
-                            <input type="text" class="form-control" name="weight" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label">Health Issues if any</label>
-                            <input type="text" class="form-control" name="issue" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label">Medicine Consumed</label>
-
-                            <input type="text" class="form-control" name="medicine" required>
+                       <div class="form-group">
+                           {{form|crispy}}
                         </div>
 
                         <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>

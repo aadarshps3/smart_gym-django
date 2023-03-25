@@ -6,22 +6,22 @@
     <div class="row">
         <!-- basic form start -->
         <div class="col-12 mt-5">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="header-title">Reply Complaint</h4>
-                    <form method="post" enctype="multipart/form-data">{% csrf_token %}
-                        <div class="form-group">
-                            <label  class="col-form-label">Reply</label>
-                            <textarea cols="5" rows="5" class="form-control" type="text" name="reply"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>
-                    </form>
-
-                    {% for message in messages %}
+               {% for message in messages %}
                     <div class="alert alert-info" role="alert">
                         <strong>{{message}}</strong>
                     </div>
                     {% endfor %}
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title">Reply Complaint</h4>
+                    <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                         <div class="form-group">
+                           {{form|crispy}}
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>
+                    </form>
+
+
                 </div>
             </div>
         </div>

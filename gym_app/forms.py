@@ -6,7 +6,26 @@ from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.forms import PasswordInput, SplitDateTimeWidget
 from gym_app.models import User, Register, Batch, Instructor, Bill, Services, Equipment, DietPlan, FirstAid, \
-    Appointment, Doubts, Complaints, CreditCard
+    Appointment, Doubts, Complaints, CreditCard, UserHealth
+from tempus_dominus.widgets import DatePicker, TimePicker, DateTimePicker
+
+
+class AddBatch(forms.ModelForm):
+    batch_time = forms.TimeField(
+        widget=TimePicker(
+            options={
+                'format': 'hh:mm A'
+            },
+            attrs={
+                'append': 'fa fa-clock-o',
+                'icon_toggle': True,
+            },
+        ),
+    )
+
+    class Meta:
+        model = Batch
+        fields = ('batch_name', 'batch_time')
 
 
 class DateInput(forms.DateInput):
@@ -20,6 +39,11 @@ class TimeInput(forms.TimeInput):
 def phone_number_validator(value):
     if not re.compile(r'^[7-9]\d{9}$').match(value):
         raise ValidationError('This is Not a Valid Phone Number')
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
 
 
 class LoginRegister(UserCreationForm):
@@ -38,11 +62,62 @@ gender_choice = (
 )
 
 
+class PhysicianSignUpForm(forms.ModelForm):
+    consultation_time = forms.TimeField(
+        widget=TimePicker(
+            options={
+                'format': 'hh:mm A'
+            },
+            attrs={
+                'append': 'fa fa-clock-o',
+                'icon_toggle': True,
+            },
+        ),
+    )
+    phone_no = forms.CharField(validators=[phone_number_validator])
+    gender = forms.ChoiceField(choices=gender_choice, required=True, widget=forms.RadioSelect)
+
+    date_of_birth = forms.DateField(widget=DateInput)
+    email = forms.CharField(validators=[
+        RegexValidator(regex='^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$', message='Please Enter a Valid Email')])
+
+    class Meta:
+        model = Register
+        fields = ('name', 'date_of_birth', 'gender', 'phone_no', 'email', 'address', 'qualification',
+                  'consultation_time', 'photo')
+        widgets = {
+            'photo': forms.FileInput(attrs={'class': 'form-control'}),
+
+        }
+
+    def clean_date_of_birth(self):
+        date = self.cleaned_data['date_of_birth']
+
+        if date >= datetime.date.today():
+            raise forms.ValidationError("Invalid Date")
+        return date
+
+    def clean_email(self):
+        mail = self.cleaned_data['email']
+        mail_qs = Register.objects.filter(email=mail)
+        if mail_qs.exists():
+            raise forms.ValidationError("This email  already registered")
+        return mail
+
+    def clean_phone_no(self):
+        phone = self.cleaned_data['phone_no']
+        phone_qs = Register.objects.filter(phone_no=phone)
+        if phone_qs.exists():
+            raise forms.ValidationError("This Phone Number already registered")
+        return phone
+
+
 class InstructorSignUpForm(forms.ModelForm):
     phone_no = forms.CharField(validators=[phone_number_validator])
     gender = forms.ChoiceField(choices=gender_choice, required=True, widget=forms.RadioSelect)
     date_of_birth = forms.DateField(widget=DateInput)
-
+    email = forms.CharField(validators=[
+        RegexValidator(regex='^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$', message='Please Enter a Valid Email')])
 
     class Meta:
         model = Register
@@ -58,34 +133,27 @@ class InstructorSignUpForm(forms.ModelForm):
             raise forms.ValidationError("Invalid Date")
         return date
 
+    def clean_email(self):
+        mail = self.cleaned_data['email']
+        mail_qs = Register.objects.filter(email=mail)
+        if mail_qs.exists():
+            raise forms.ValidationError("This email  already registered")
+        return mail
 
-class PhysicianSignUpForm(forms.ModelForm):
-    phone_no = forms.CharField(validators=[phone_number_validator])
-    gender = forms.ChoiceField(choices=gender_choice, required=True, widget=forms.RadioSelect)
-    consultation_time = forms.TimeField(widget=TimeInput(attrs={'id':'example-time-input'}))
-    date_of_birth = forms.DateField(widget=DateInput)
-
-    class Meta:
-        model = Register
-        fields = ('name', 'date_of_birth', 'gender', 'phone_no', 'email', 'address', 'qualification',
-                  'consultation_time', 'photo')
-        widgets = {
-            'photo': forms.FileInput(attrs={'class': 'form-control'})
-        }
-
-    def clean_date_of_birth(self):
-        date = self.cleaned_data['date_of_birth']
-
-        if date >= datetime.date.today():
-            raise forms.ValidationError("Invalid Date")
-        return date
+    def clean_phone_no(self):
+        phone = self.cleaned_data['phone_no']
+        phone_qs = Register.objects.filter(phone_no=phone)
+        if phone_qs.exists():
+            raise forms.ValidationError("This Phone Number already registered")
+        return phone
 
 
 class CustomerSignUpForm(forms.ModelForm):
     phone_no = forms.CharField(validators=[phone_number_validator])
     gender = forms.ChoiceField(choices=gender_choice, required=True, widget=forms.RadioSelect)
     date_of_birth = forms.DateField(widget=DateInput)
-    required_batch_time = forms.TimeField(widget=TimeInput)
+    email = forms.CharField(validators=[
+        RegexValidator(regex='^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$', message='Please Enter a Valid Email')])
 
     class Meta:
         model = Register
@@ -103,14 +171,19 @@ class CustomerSignUpForm(forms.ModelForm):
             raise forms.ValidationError("Invalid Date")
         return date
 
+    def clean_email(self):
+        mail = self.cleaned_data['email']
+        mail_qs = Register.objects.filter(email=mail)
+        if mail_qs.exists():
+            raise forms.ValidationError("This email  already registered")
+        return mail
 
-class AddBatch(forms.ModelForm):
-    batch_time = forms.TimeField(widget=TimeInput(attrs={'class':'timepicker'}))
-
-    class Meta:
-        model = Batch
-        fields = '__all__'
-
+    def clean_phone_no(self):
+        phone = self.cleaned_data['phone_no']
+        phone_qs = Register.objects.filter(phone_no=phone)
+        if phone_qs.exists():
+            raise forms.ValidationError("This Phone Number already registered")
+        return phone
 
 
 class AddInstructor(forms.ModelForm):
@@ -203,7 +276,7 @@ class PayBillForm(forms.ModelForm):
     card_no = forms.CharField(validators=[RegexValidator(regex='^.{16}$', message='Please Enter a Valid Card No')])
     card_cvv = forms.CharField(widget=forms.PasswordInput,
                                validators=[RegexValidator(regex='^.{3}$', message='Please Enter a Valid CVV')])
-    expiry_date = forms.DateField(widget=DateInput(attrs={'id':'example-month-input'}))
+    expiry_date = forms.DateField(widget=DateInput(attrs={'id': 'example-month-input'}))
 
     class Meta:
         model = CreditCard
@@ -217,3 +290,47 @@ class PayBillForm(forms.ModelForm):
             raise forms.ValidationError("This card has Expired")
 
         return cleaned_data
+
+
+class UserHealthForm(forms.ModelForm):
+    name = forms.ModelChoiceField(queryset=Register.objects.filter(role='Customer'))
+
+    class Meta:
+        model = UserHealth
+        exclude = ('instructor', 'transformation_status')
+
+
+class UserHealthUpdateForm(forms.ModelForm):
+    name = forms.ModelChoiceField(queryset=Register.objects.filter(role='Customer'))
+
+    class Meta:
+        model = UserHealth
+        fields = ('name', 'height', 'weight', 'health_issue', 'medicine_consumption')
+
+    def __init__(self, *args, **kwargs):
+        super(UserHealthUpdateForm, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            self.fields['name'].widget.attrs['readonly'] = True
+
+    def clean_name(self):
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            return instance.name
+        else:
+            return self.cleaned_data['name']
+
+
+class ReplyForm(forms.Form):
+    reply = forms.CharField(widget=forms.Textarea, required=True)
+
+    def clean_reply(self):
+        reply = self.cleaned_data['reply']
+        if reply == '':
+            raise forms.ValidationError('This Field is required')
+        return reply
+
+
+class BmiCalculation(forms.Form):
+    height = forms.FloatField(label='Height in cm')
+    weight = forms.FloatField(label='weight in kg')

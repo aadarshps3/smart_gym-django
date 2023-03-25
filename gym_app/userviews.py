@@ -4,8 +4,11 @@ from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect
 from gym_app import models
+from .utils import render_to_pdf
+from django.http import HttpResponse
+from django.template.loader import get_template
 
-from gym_app.forms import AppointmentForm, AskDoubtForm, ComplaintForm, PayBillForm
+from gym_app.forms import AppointmentForm, AskDoubtForm, ComplaintForm, PayBillForm, BmiCalculation
 from gym_app.models import Register, UserHealth, DietPlan, Attendance, Appointment, Equipment, Doubts, \
     Complaints, Bill, User, CreditCard
 
@@ -114,13 +117,13 @@ def view_bill_user(request):
 
 
 def pay_bill(request, id):
-    bi = Bill.objects.get(id=id)
+    bi = Bil  / l.objects.get(id=id)
     form = PayBillForm()
     if request.method == 'POST':
         card = request.POST.get('card')
         c = request.POST.get('cvv')
         da = request.POST.get('exp')
-        CreditCard(card_no=card,card_cvv=c,expiry_date=da,bill=bi).save()
+        CreditCard(card_no=card, card_cvv=c, expiry_date=da, bill=bi).save()
         bi.status = 1
         bi.save()
         messages.info(request, 'Bill Paid  Successfully')
@@ -134,13 +137,39 @@ def pay_bill(request, id):
         #     bi.status = 1
         #     bi.save()
 
-    return render(request, 'usertemplates/pay_bill.html',)
+    return render(request, 'usertemplates/pay_bill.html', )
+
+
+def pay_in_direct(request, id):
+    bi = Bill.objects.get(id=id)
+    bi.status = 2
+    bi.save()
+    messages.info(request,'Choosed to Pay Fee Direct in office')
+    return redirect('bill_history')
 
 
 def bill_history(request):
     u = Register.objects.get(user=request.user)
-    bill = Bill.objects.filter(name=u)
+    bill = Bill.objects.filter(name=u, status__in=[1,2])
+
     return render(request, 'usertemplates/view_bill_history.html', {'bills': bill})
+
+
+def get_invoice(request, id):
+    u = Register.objects.get(user=request.user)
+    bill = Bill.objects.get(id=id)
+    template = get_template('usertemplates/invoice.html')
+    html = template.render({'data': bill})
+
+    pdf = render_to_pdf('usertemplates/invoice.html', {'data': bill})
+
+    return HttpResponse(pdf, content_type='application/pdf')
+
+
+def view_invoice(request, id):
+    u = Register.objects.get(user=request.user)
+    bill = Bill.objects.filter(id=id)
+    return render(request, 'usertemplates/invoice.html', {'data': bill})
 
 
 def view_transformation(request):
@@ -150,23 +179,27 @@ def view_transformation(request):
 
 
 def bmi(request):
+    form = BmiCalculation()
     if request.method == 'POST':
-        height = request.POST.get('height')
-        weight = request.POST.get('weight')
-        user_bmi = (float(weight) / float(height) / float(height)) * 10000
-        bmi=round(user_bmi, 1)
-        return redirect('view_bmi', bmi)
-    return render(request, 'usertemplates/bmi.html', )
+        form = BmiCalculation(request.POST)
+        if form.is_valid():
+            height = form.cleaned_data.get('height')
+            weight = form.cleaned_data.get('weight')
+            user_bmi = (float(weight) / float(height) / float(height)) * 10000
+            bmi = round(user_bmi, 1)
+            return redirect('view_bmi', bmi)
+    return render(request, 'usertemplates/bmi.html', {'form': form})
 
 
-def view_bmi(request,bmi):
+def view_bmi(request, bmi):
     user_bmi = float(bmi)
-    return render(request, 'usertemplates/view_bmi.html',{'user_bmi':user_bmi})
+    return render(request, 'usertemplates/view_bmi.html', {'user_bmi': user_bmi})
+
 
 def drop_gym(request):
     user = request.user
     if request.method == 'POST':
         user.delete()
-        messages.info(request,'Your Account has been Deleted')
+        messages.info(request, 'Your Account has been Deleted')
         return redirect('login_view')
-    return render(request,'usertemplates/drop_gym.html')
+    return render(request, 'usertemplates/drop_gym.html')

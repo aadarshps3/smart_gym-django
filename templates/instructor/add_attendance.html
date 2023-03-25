@@ -27,6 +27,11 @@
                         </thead>
 
                         <tbody>
+                        {% if names == 'no batch' %}
+                        <tr>
+                            <td>You Havent assigned batch yet..</td>
+                        </tr>
+                        {% else %}
                         {% for i in names %}
                         <tr>
                             <td>{{forloop.counter}}</td>
@@ -36,7 +41,7 @@
                         </tr>
                         {% endfor %}
                         </tbody>
-
+{% endif %}
                     </table>
                 </div>
             </div>

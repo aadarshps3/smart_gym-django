@@ -4,30 +4,31 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from gym_app import models
-from gym_app.forms import FirstAidForm
+from gym_app.forms import FirstAidForm, UserHealthForm, UserHealthUpdateForm, ReplyForm
 from gym_app.models import Register, UserHealth, DietPlan, Attendance, FirstAid, Appointment, Doubts
 
 
+def consultation_time(request):
+    time = Register.objects.filter(user=request.user)
+
+    return render(request,'physician/consultation_time.html',{'time':time})
 def view_user_health(request):
     detail = UserHealth.objects.all()
     return render(request,'physician/view_health_physician.html',{'details':detail})
 
 
-def edit_user_health(request,id):
+def edit_user_health(request, id):
     detail = UserHealth.objects.get(id=id)
-    if request.method == 'POST':
-        height = request.POST.get('height')
-        weight = request.POST.get('weight')
-        issue = request.POST.get('issue')
-        med = request.POST.get('medicine')
 
-        detail.height = height
-        detail.weight = weight
-        detail.health_issue = issue
-        detail.medicine_consumption = med
-        detail.save()
+    form = UserHealthUpdateForm(instance=detail)
+    if request.method == 'POST':
+        form = UserHealthUpdateForm(request.POST or None, instance=detail or None)
+        if form.is_valid():
+            form.save()
+
+            messages.info(request, 'User health Detail Updated')
         return redirect('view_user_health')
-    return render(request,'physician/edit_health_physician.html',{'details':detail})
+    return render(request, 'physician/edit_health_physician.html', {'form': form})
 
 
 
@@ -99,14 +100,15 @@ def view_medicaldoubts_physician(request):
 
 def reply_doubts(request,id):
     doubt = Doubts.objects.get(id=id)
+    form = ReplyForm()
 
+    form = ReplyForm()
     if request.method == 'POST':
-        reply = request.POST.get('reply')
-        doubt.reply = reply
-        doubt.user_name = doubt.user_name
-        doubt.doubts = doubt.doubts
-        doubt.physician = Register.objects.get(user=request.user)
-        doubt.save()
-        return redirect('view_medicaldoubts_physician')
+        form = ReplyForm(request.POST)
+        if form.is_valid():
+            reply = form.cleaned_data.get('reply')
+            doubt.reply = reply
+            doubt.save()
+            return redirect('view_medicaldoubts_physician')
 
-    return render(request,'physician/reply_doubt.html',{'doubts':doubt})
+    return render(request,'physician/reply_doubt.html',{'form':form})

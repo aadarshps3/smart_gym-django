@@ -56,7 +56,8 @@
                             </div>
                             <div class="col-lg-8">
                                 {% if bill.status == 0 %}
-                                <a href="{% url 'pay_bill' bill.id %}" class="btn btn-primary">pay</a>
+                                <a href="{% url 'pay_bill' bill.id %}" class="btn btn-primary">PAY NOW</a>
+                                <a href="{% url 'pay_in_direct' bill.id %}" class="btn btn-primary">PAY DIRECT</a>
                                 {% else %}
                                 <button class="btn btn-success">Bill Paid </button>
                                 {% endif %}

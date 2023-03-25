@@ -1,0 +1,69 @@
+
+
+<!doctype html>
+<html>
+<head>
+  {% load static %}
+
+<meta charset="utf-8">
+
+<title>Invoice</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
+<!-- Google fonts-->
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+<link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+  <style>
+    @page { size: a6 portrait; }
+  </style>
+
+
+</head>
+
+<body>
+
+<div class="invoice-box">
+    <header class="clearfix">
+      <div class="brand-icon  navbar-brand js-scroll-trigger" >
+
+        <td class="title"><br><br><br>
+
+
+          <h1 class="navbar-brand js-scroll-trigger"  style="font-size: 25px; margin-top:20px; margin-left:20px; text-align:center;">FAT TO FIT </h1>
+      </td>
+
+      </div>
+
+
+
+        <center><h2>INVOICE </h2></center>
+        <div style="margin-top:10px ; margin-left:30px;">
+          <h4><span>Date :</span>  {{data.paid_on}}</h4></div>
+
+        <div id="project" >
+             <div class="col-lg-12 mt-5">
+
+
+             </div>
+
+
+          <div style="margin-top:10px ; margin-left:150px;"><h4 class="lead" style="font-size: 10px;"><span>Name   :</span>{{data.name}}</h4> </div>
+          <div style="margin-top:10px ; margin-left:150px;"><h4 class="lead" style="font-size: 10px;"><span>Email :</span> {{data.name.email}}</h4></div>
+          <div style="margin-top:10px ; margin-left:150px;"><h4 class="lead" style="font-size: 10px;"><span>Mobile No :</span>{{data.name.phone_no}}</h4></div>
+          <div style="margin-top:10px ; margin-left:150px;"><h4 class="lead" style="font-size: 10px;"><span>Bill From  :</span> {{data.from_date}}</h4></div>
+          <div style="margin-top:10px ; margin-left:150px;"><h4 class="lead" style="font-size: 10px;"><span>Bill To  :</span> {{data.to_date}}</h4></div>
+          <div style="margin-top:10px ; margin-left:150px;"><h4 class="lead" style="font-size: 10px;"><span>Present Days :</span> {{data.present_days}}</h4></div>
+
+          <div style="margin-top:10px ; margin-left:150px;"><h2 class="lead" style="font-size: 20px; "><span>Amount :</span> {{data.amount}}</h2></div>
+
+
+        </div>
+      </header>
+
+
+</div>
+</body>
+</html>
+
+

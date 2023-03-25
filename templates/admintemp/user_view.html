@@ -45,7 +45,7 @@
                             <td>{{user.address}}</td>
                             <td>{{user.occupation}}</td>
 
-                            <td><img src="{{user.photo.url}}" style="width:100px;height:120px;"></td>
+                            <td><img src="{{user.photo.url}}" style="100px;width:80px"></td>
                             <td>
                                 {% if user.status == 0 %}
                                 <a class="btn btn-primary " href="{% url 'approve_user' user.user_id %}">Approve

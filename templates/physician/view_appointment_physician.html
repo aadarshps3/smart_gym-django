@@ -34,8 +34,8 @@
 
                             <td>
                                 {% if appointment.status == 0 %}
-                                <a href="{% url 'approve_appointment' appointment.id %}">Approve</a>/
-                                <a href="{% url 'reject_appointment' appointment.id %}">Reject</a>
+                                <a class="btn btn-primary btn-rounded btn-sm my-0" href="{% url 'approve_appointment' appointment.id %}">Approve</a>
+                                <a class="btn btn-danger btn-rounded btn-sm my-0" href="{% url 'reject_appointment' appointment.id %}">Reject</a>
                                 {% elif appointment.status == 1 %}
                                 <button class="btn btn-info">Approved</button>
                                 {% else %}

@@ -39,10 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'gym_app',
     'crispy_forms',
+    'tempus_dominus',
+
 
 
 
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -81,7 +84,7 @@ WSGI_APPLICATION = 'smart_gym.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': str(BASE_DIR / 'db.sqlite3'),
     }
 }
 
@@ -132,3 +135,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR,"media")
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+TIME_INPUT_FORMATS = ['%I:%M %p', ]

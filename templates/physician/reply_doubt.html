@@ -12,8 +12,8 @@
                     <form method="post" enctype="multipart/form-data">{% csrf_token %}
 
                         <div class="form-group">
-                            <label class="col-form-label">Reply</label>
-                            <textarea cols="5" rows="5" type="text" class="form-control" name="reply" required></textarea>
+                            {{form|crispy}}
+
                         </div>
 
 

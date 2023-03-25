@@ -12,7 +12,7 @@
     <div class="card">
 
         <div class="card-body">
-            <h4 class="header-title">Complaints</h4>
+            <h4 class="header-title"><span>Complaints</span></h4>
             <div class="single-table">
                 <div class="table-responsive">
                     <table class="table text-center">
@@ -21,7 +21,7 @@
                             <th>ID</th>
                             <th>Name</th>
                             <th>complaint</th>
-                            <th>Action</th>
+                            <th>Reply</th>
                             <th>Delete</th>
                         </tr>
                         </thead>
@@ -31,11 +31,11 @@
                             <td>{{forloop.counter }}</td>
                             <td>{{ complaint.user_name.name}}</td>
                             <td>{{ complaint.complaint}}</td>
-                            <td>
+                             <td>
                                 {% if complaint.reply %}
-                                <p>Replied</p>
+                                <p>{{complaint.reply}}</p>
                                 {% else %}
-                                <a href="{% url 'reply_complaint' complaint.id %}">Reply</a>
+                                <a href="{% url 'reply_complaint' complaint.id %}" class="btn btn-primary">Reply Now</a>
                                 {% endif %}
                             </td>
                             <td><a class="btn btn-primary" href="{% url 'delete_complaint' complaint.id %}">Delete</a>

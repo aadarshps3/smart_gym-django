@@ -6,10 +6,15 @@
     <div class="row">
         <!-- basic form start -->
         <div class="col-12 mt-5">
+             {% for message in messages %}
+        <div class="alert alert-info" role="alert">
+            <strong>{{message}}</strong>
+        </div>
+        {% endfor %}
             <div class="card">
                 <div class="card-body">
                     <h4 class="header-title">Add Bill</h4>
-                    <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <form method="post" id="form" data-bill-url="{% url 'ajax_load_bill' %}">{% csrf_token %}
                         {{form|crispy}}
 
                         <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>
@@ -23,4 +28,35 @@
 
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $("#id_to_date").change(function () {
+        const url = $("#form").attr("data-bill-url");
+
+        const to_date = $(this).val();
+       const from_date = document.getElementById("id_from_date").value;
+       const customerId = document.getElementById("id_name").value;
+
+
+
+        $.ajax({
+            url: url,
+            data: {
+                'to_date': to_date,
+                'from_date': from_date,
+                'customerId': customerId,
+
+            },
+            success: function (data) {
+                $( "#id_present_days" ).val(data.present_days);
+                $( "#id_amount" ).val(data.amount);
+
+                }
+
+        });
+
+    });
+
+
+</script>
 {% endblock %}

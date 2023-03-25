@@ -40,8 +40,11 @@
                       <td>
                         {% if bill.status == 0  %}
                         <p>Bill Pending</p>
-                        {% else %}
-                        <p>Paid</p>
+                           {% elif bill.status == 1  %}
+                            <p>Paid</p>
+                        {% elif bill.status == 2  %}
+                          <p>Choosed to Pay in Direct</p>
+
                         {% endif %}
                           </td>
 

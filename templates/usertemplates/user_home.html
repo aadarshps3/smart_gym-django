@@ -1,26 +1,56 @@
 {% extends 'usertemplates/base.html' %}
 {% block content %}
+<style>.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+</style>
+<!--<div class="col-md-6 mt-5 mb-3">-->
+    <!--                        <div class="card">-->
+    <!--                            <div class="seo-fact sbg1">-->
+    <!--                                <div class="chartjs-size-monitor"-->
+    <!--                                     style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">-->
+    <!--                                    <div class="chartjs-size-monitor-expand"-->
+    <!--                                         style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">-->
+    <!--                                        <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>-->
+    <!--                                    </div>-->
+    <!--                                    <div class="chartjs-size-monitor-shrink"-->
+    <!--                                         style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">-->
+    <!--                                        <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>-->
+    <!--                                    </div>-->
+    <!--                                </div>-->
+    <!--                                <div class="p-4 d-flex justify-content-between align-items-center">-->
+    <!--                                    <div class="seofct-icon">Home</div>-->
+    <!--                                    <h2></h2>-->
+    <!--                                </div>-->
+    <!--                            </div>-->
+    <!--                        </div>-->
+<!--</div>-->
 
- <div class="col-md-6 mt-5 mb-3">
+
+<div class="col-lg-10 mt-5" style="backround-image urls()">
+
                         <div class="card">
-                            <div class="seo-fact sbg1">
-                                <div class="chartjs-size-monitor"
-                                     style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
-                                    <div class="chartjs-size-monitor-expand"
-                                         style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-                                        <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
+                            <div class="card-body">
+                                <h4 class="header-title">Cutomer Page</h4>
+                                <div id="accordion4" class="according accordion-s3 gradiant-bg">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <a class="card-link" data-toggle="collapse" href="#accordion41" aria-expanded="true"></a>
+                                        </div>
+                                        <div id="accordion41" class="collapse show" data-parent="#accordion4" style="">
+                                            <div class="card-body">
+                                                 <img src="{{data.photo.url}}" style="height:450px;width:400px;" class="center">
+                                                <h4 class="mt-2 ml-2 " style="text-align:center;"> {{data.name}}</h4>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="chartjs-size-monitor-shrink"
-                                         style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-                                        <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
-                                    </div>
-                                </div>
-                                <div class="p-4 d-flex justify-content-between align-items-center">
-                                    <div class="seofct-icon">Home</div>
-                                    <h2></h2>
+
                                 </div>
                             </div>
                         </div>
                     </div>
-
+</div>
 {% endblock %}

@@ -1,9 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView
-from gym_app.forms import InstructorSignUpForm, PhysicianSignUpForm, CustomerSignUpForm, LoginRegister
-from gym_app.models import User
+from gym_app.forms import InstructorSignUpForm, PhysicianSignUpForm, CustomerSignUpForm, LoginRegister, LoginForm
+from gym_app.models import User, Batch, Register
 
 
 def index(request):
@@ -35,24 +36,34 @@ def gallery(request):
 
 
 def login_view(request):
+    form = LoginForm()
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            if user.is_staff:
-                return redirect('admin_page')
-            elif user.is_customer:
-                return redirect('user_page')
-            elif user.is_instructor:
-                return redirect('instructor_page')
-            elif user.is_physician:
-                return redirect('physician_page')
-        else:
-            messages.info(request, 'Invalid Credentials')
+        form = LoginForm(request.POST)
+        if form.is_valid():
 
-    return render(request, 'login.html')
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+
+                if user.is_staff:
+                    login(request, user)
+                    return redirect('admin_page')
+                if user.is_instructor:
+                    login(request, user)
+                    return redirect('instructor_page')
+                if user.is_physician:
+                    login(request, user)
+                    return redirect('physician_page')
+                if user.is_customer and user.register.status == 1:
+                    login(request, user)
+                    return redirect('user_page')
+                else:
+                    messages.info(request, 'You are not Approved to login')
+            else:
+                messages.info(request, 'Invalid Credentials')
+    return render(request, 'login.html',{'form':form})
 
 
 def admin_page(request):
@@ -84,7 +95,9 @@ def instructor_register(request):
 
 
 def instructor_page(request):
-    return render(request, 'instructor/instructor_home.html')
+    data = Register.objects.get(user=request.user)
+    return render(request, 'instructor/instructor_home.html',{'data':data})
+
 
 
 def physician_register(request):
@@ -103,14 +116,15 @@ def physician_register(request):
             c.role = 'Physician'
             c.save()
             messages.info(request, 'Physician Registered Successfully')
-            return redirect('admin_page')
+            return redirect('physician_register')
 
     return render(request, 'admintemp/physician_register.html',
-                  {'login_form': login_form, 'physician_form': physician_form})
+                  {'login_form': login_form, 'form': physician_form})
 
 
 def physician_page(request):
-    return render(request, 'physician/physician_home.html')
+    data = Register.objects.get(user=request.user)
+    return render(request, 'physician/physician_home.html',{'data':data})
 
 
 def customer_register(request):
@@ -131,9 +145,7 @@ def customer_register(request):
             messages.info(request, 'Customer Registered Successfully')
             return redirect('view_user')
 
-        else:
-            login_form = LoginRegister()
-            customer_form = CustomerSignUpForm()
+
 
     return render(request, 'admintemp/customer_register.html',
                   {'login_form': login_form, 'customer_form': customer_form})
@@ -145,4 +157,17 @@ def logout_view(request):
 
 
 def user_page(request):
-    return render(request, 'usertemplates/user_home.html')
+    data = Register.objects.get(user=request.user)
+
+    return render(request, 'usertemplates/user_home.html',{'data':data})
+# AJAX
+def load_batch(request):
+    batch_id = request.GET.get('batch_id')
+    required_batch_time = Batch.objects.get(id=batch_id).batch_time
+
+    t = required_batch_time.strftime("%I:%M%p" )
+    data = {
+        'required_batch_time':t
+    }
+
+    return JsonResponse(data)

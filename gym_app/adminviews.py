@@ -1,10 +1,11 @@
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from gym_app import models
-from gym_app.forms import AddBatch, AddInstructor, AddBill, AddService, AddEquipment
+from gym_app.forms import AddBatch, AddInstructor, AddBill, AddService, AddEquipment, ReplyForm
 from gym_app.models import Services, Equipment, Complaints, Batch, Register, Instructor, Attendance
+from .forms import *
 
 
 def user_view(request):
@@ -19,8 +20,9 @@ def staff_view(request):
 
 def delete_staff(request, id):
     staff = Register.objects.get(id=id)
+    u = User.objects.get(register=staff)
     if request.method == 'POST':
-        staff.delete()
+        u.delete()
         return redirect('view_staff')
     return render(request, 'admintemp/delete_staff.html')
 
@@ -33,15 +35,23 @@ def approve_user(request, user_id):
 
 
 def add_batch(request):
-    instructor = Register.objects.filter(role='Instructor')
     form = AddBatch()
+    form2 = PhysicianSignUpForm()
+    form3 = LoginRegister()
+
     if request.method == 'POST':
         form = AddBatch(request.POST)
         if form.is_valid():
-            form.save()
-            messages.info(request, 'Batch Added Successfully')
-            return redirect('add_batch')
-    return render(request, 'admintemp/add_batches.html', {'form': form})
+            bat = form.save(commit=False)
+            batch_qs = Batch.objects.filter(batch_name=bat.batch_name)
+            if batch_qs.exists():
+                messages.info(request, 'A Batch with this name already exists')
+            else:
+                bat.save()
+
+                messages.info(request, 'Batch Added Successfully')
+                return redirect('add_batch')
+    return render(request, 'admintemp/add_batches.html', {'form': form, 'form2': form2, 'form3': form3})
 
 
 def add_instructor(request):
@@ -49,10 +59,20 @@ def add_instructor(request):
     if request.method == 'POST':
         form = AddInstructor(request.POST)
         if form.is_valid():
-            form.save()
-            messages.info(request, 'Instructor Added Successfully')
-            return redirect('add_instructor')
+            i = form.save(commit=False)
+            if Instructor.objects.filter(batch=i.batch).exists():
+                messages.info(request, 'Instructor already added for this batch')
+            else:
+                i.save()
+                messages.info(request, 'Instructor Added Successfully')
+                return redirect('add_instructor')
     return render(request, 'admintemp/add_instructor.html', {'form': form})
+
+
+def view_batches(request):
+    batch = Batch.objects.all()
+    instructor = Instructor.objects.all()
+    return render(request, 'admintemp/view_batches.html',{'batch':batch,'instructor':instructor})
 
 
 def view_attendance_admin(request):
@@ -77,14 +97,35 @@ def bill(request):
     if request.method == 'POST':
         form = AddBill(request.POST)
         if form.is_valid():
-            form.save()
-            messages.info(request, 'Bill Added Successfully')
-            return redirect('view_bill')
+            b = form.save(commit=False)
+            if b.present_days == 0:
+                messages.info(request, "User Haven't Attended gym during this period")
+            else:
+                b.save()
+                messages.info(request, 'Bill Added Successfully')
+                return redirect('view_bill')
     else:
         form = AddBill()
 
-
     return render(request, 'admintemp/generate_bill.html', {'form': form})
+
+
+# AJAX
+def load_bill(request):
+    customer_id = request.GET.get('customerId')
+    from_date = request.GET.get('from_date')
+    to_date = request.GET.get('to_date')
+
+    customer = Register.objects.get(id=customer_id)
+    present_days = Attendance.objects.filter(name=customer, date__range=[from_date, to_date]).count()
+    amount = present_days * 100
+    data = {
+        'present_days': present_days,
+        'amount': amount
+
+    }
+
+    return JsonResponse(data)
 
 
 def view_bill(request):
@@ -172,14 +213,17 @@ def view_complaint(request):
 
 def reply_complaint(request, id):
     ct = Complaints.objects.get(id=id)
-
+    form = ReplyForm()
     if request.method == 'POST':
-        reply = request.POST.get('reply')
+        form = ReplyForm(request.POST)
+        if form.is_valid():
+            reply = form.cleaned_data.get('reply')
 
-        ct.reply = reply
-        ct.save()
-        return redirect('view_complaint')
-    return render(request, 'admintemp/reply_complaint.html')
+            ct.reply = reply
+            ct.save()
+            messages.info(request, 'Reply Send Successfully')
+            return redirect('view_complaint')
+    return render(request, 'admintemp/reply_complaint.html', {'form': form})
 
 
 def delete_complaint(request, id):
@@ -188,3 +232,11 @@ def delete_complaint(request, id):
         complaint.delete()
         return redirect('view_complaint')
     return render(request, 'admintemp/delete_complaint.html')
+
+
+# AJAX
+def load_batch_time(request):
+    batch_name_id = request.GET.get('batch_id')
+    time = Batch.objects.filter(batch_id=batch_name_id, approval_status=1).all()
+
+    return JsonResponse(list(time.values('id', 'batch_time')), safe=False)
